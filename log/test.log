@@ -1,0 +1,106 @@
+  [1m[36m (468.0ms)[0m  [1mDROP DATABASE IF EXISTS "myapp_test"[0m
+  [1m[35m (11574.2ms)[0m  CREATE DATABASE "myapp_test" ENCODING = 'unicode'
+  [1m[36mSQL (0.0ms)[0m  [1mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  [1m[35m (20.1ms)[0m  CREATE TABLE "schema_migrations" ("version" character varying(255) NOT NULL) 
+  [1m[36m (42.3ms)[0m  [1mCREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")[0m
+  [1m[35m (0.0ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36m (1.0ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('0')[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.0ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateCourses (20160112023343)
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (144.5ms)[0m  [1mCREATE TABLE "courses" ("id" serial primary key, "dept" character varying(255), "num" character varying(255), "desc" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35mSQL (0.0ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20160112023343"]]
+  [1m[36m (19.1ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.0ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36mActiveRecord::SchemaMigration Load (1.0ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (1.0ms)[0m  ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "courses" DISABLE TRIGGER ALL
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (1.0ms)[0m  DELETE FROM "courses"
+  [1m[36mFixture Insert (0.0ms)[0m  [1mINSERT INTO "courses" ("dept", "num", "desc", "created_at", "updated_at", "id") VALUES ('MyString', 'MyString', 'MyString', '2016-01-12 22:33:36', '2016-01-12 22:33:36', 980190962)[0m
+  [1m[35mFixture Insert (1.0ms)[0m  INSERT INTO "courses" ("dept", "num", "desc", "created_at", "updated_at", "id") VALUES ('MyString', 'MyString', 'MyString', '2016-01-12 22:33:36', '2016-01-12 22:33:36', 298486374)
+  [1m[36m (18.0ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.0ms)[0m  ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "courses" ENABLE TRIGGER ALL
+  [1m[36m (1.0ms)[0m  [1mBEGIN[0m
+------------------------------------------------
+CoursesControllerTest: test_should_create_course
+------------------------------------------------
+  [1m[35mCourse Load (1.0ms)[0m  SELECT  "courses".* FROM "courses"  WHERE "courses"."id" = $1 LIMIT 1  [["id", 980190962]]
+  [1m[36m (0.0ms)[0m  [1mSELECT COUNT(*) FROM "courses"[0m
+Processing by CoursesController#create as HTML
+  Parameters: {"course"=>{"dept"=>"MyString", "desc"=>"MyString", "num"=>"MyString"}}
+  [1m[35m (1.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (1.0ms)[0m  [1mINSERT INTO "courses" ("created_at", "dept", "desc", "num", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["created_at", "2016-01-12 22:33:36.756624"], ["dept", "MyString"], ["desc", "MyString"], ["num", "MyString"], ["updated_at", "2016-01-12 22:33:36.756624"]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://test.host/courses/980190963
+Completed 302 Found in 6ms (ActiveRecord: 2.0ms)
+  [1m[36m (0.0ms)[0m  [1mSELECT COUNT(*) FROM "courses"[0m
+  [1m[35m (1.0ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+-------------------------------------------------
+CoursesControllerTest: test_should_destroy_course
+-------------------------------------------------
+  [1m[35mCourse Load (0.0ms)[0m  SELECT  "courses".* FROM "courses"  WHERE "courses"."id" = $1 LIMIT 1  [["id", 980190962]]
+  [1m[36m (0.0ms)[0m  [1mSELECT COUNT(*) FROM "courses"[0m
+Processing by CoursesController#destroy as HTML
+  Parameters: {"id"=>"980190962"}
+  [1m[35mCourse Load (1.0ms)[0m  SELECT  "courses".* FROM "courses"  WHERE "courses"."id" = $1 LIMIT 1  [["id", 980190962]]
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.0ms)[0m  DELETE FROM "courses" WHERE "courses"."id" = $1  [["id", 980190962]]
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://test.host/courses
+Completed 302 Found in 2ms (ActiveRecord: 1.0ms)
+  [1m[35m (0.0ms)[0m  SELECT COUNT(*) FROM "courses"
+  [1m[36m (1.0ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+-------------------------------------------
+CoursesControllerTest: test_should_get_edit
+-------------------------------------------
+  [1m[36mCourse Load (0.0ms)[0m  [1mSELECT  "courses".* FROM "courses"  WHERE "courses"."id" = $1 LIMIT 1[0m  [["id", 980190962]]
+Processing by CoursesController#edit as HTML
+  Parameters: {"id"=>"980190962"}
+  [1m[35mCourse Load (0.0ms)[0m  SELECT  "courses".* FROM "courses"  WHERE "courses"."id" = $1 LIMIT 1  [["id", 980190962]]
+  Rendered courses/_form.html.erb (19.0ms)
+Completed 500 Internal Server Error in 2284ms
+  [1m[36m (0.0ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+--------------------------------------------
+CoursesControllerTest: test_should_get_index
+--------------------------------------------
+  [1m[36mCourse Load (0.0ms)[0m  [1mSELECT  "courses".* FROM "courses"  WHERE "courses"."id" = $1 LIMIT 1[0m  [["id", 980190962]]
+Processing by CoursesController#index as HTML
+  [1m[35mCourse Load (0.0ms)[0m  SELECT "courses".* FROM "courses"
+Completed 500 Internal Server Error in 1955ms
+  [1m[36m (0.0ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+------------------------------------------
+CoursesControllerTest: test_should_get_new
+------------------------------------------
+  [1m[36mCourse Load (0.0ms)[0m  [1mSELECT  "courses".* FROM "courses"  WHERE "courses"."id" = $1 LIMIT 1[0m  [["id", 980190962]]
+Processing by CoursesController#new as HTML
+  Rendered courses/_form.html.erb (2.0ms)
+Completed 500 Internal Server Error in 1942ms
+  [1m[35m (0.0ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+----------------------------------------------
+CoursesControllerTest: test_should_show_course
+----------------------------------------------
+  [1m[35mCourse Load (0.0ms)[0m  SELECT  "courses".* FROM "courses"  WHERE "courses"."id" = $1 LIMIT 1  [["id", 980190962]]
+Processing by CoursesController#show as HTML
+  Parameters: {"id"=>"980190962"}
+  [1m[36mCourse Load (0.0ms)[0m  [1mSELECT  "courses".* FROM "courses"  WHERE "courses"."id" = $1 LIMIT 1[0m  [["id", 980190962]]
+Completed 500 Internal Server Error in 1964ms
+  [1m[35m (1.0ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+------------------------------------------------
+CoursesControllerTest: test_should_update_course
+------------------------------------------------
+  [1m[35mCourse Load (0.0ms)[0m  SELECT  "courses".* FROM "courses"  WHERE "courses"."id" = $1 LIMIT 1  [["id", 980190962]]
+Processing by CoursesController#update as HTML
+  Parameters: {"course"=>{"dept"=>"MyString", "desc"=>"MyString", "num"=>"MyString"}, "id"=>"980190962"}
+  [1m[36mCourse Load (0.0ms)[0m  [1mSELECT  "courses".* FROM "courses"  WHERE "courses"."id" = $1 LIMIT 1[0m  [["id", 980190962]]
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://test.host/courses/980190962
+Completed 302 Found in 2ms (ActiveRecord: 0.0ms)
+  [1m[35m (0.0ms)[0m  ROLLBACK
